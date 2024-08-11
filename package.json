@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +21,8 @@
     "morgan": "^1.10.0"
   },
   "dependencies": {
-    "nodemon": "^3.1.4"
+    "mongodb-memory-server": "^10.0.0",
+    "nodemon": "^3.1.4",
+    "supertest": "^7.0.0"
   }
 }

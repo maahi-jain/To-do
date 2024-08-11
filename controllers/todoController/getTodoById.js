@@ -7,6 +7,10 @@ const getTodoById = async (req, res, next) => {
         console.log("User id--", user);
         console.log("Todo Id--", TodoId);
         const todo = await Todo.findOne({ user, _id: TodoId });
+
+        if (!todo) {
+            res.status(404).json({ message: "Todo not found." })
+        }
         res.status(200).json({ todo: todo || {} })
 
     } catch (error) {
