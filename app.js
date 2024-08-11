@@ -6,6 +6,7 @@ dotenv.config();
 
 // Router
 const authRouter = require("./routes/auth");
+const todoRouter = require("./routes/todo");
 const errorMiddleware = require("./middleware/errorMiddleware");
 
 const app = express();
@@ -20,6 +21,7 @@ connectToDB();
 
 // routing
 app.use("/api/user", authRouter);
+app.use("/api/todos", todo)
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));
