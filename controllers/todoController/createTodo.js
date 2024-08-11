@@ -1,4 +1,4 @@
-const todo = require("../../models/todo");
+const Todo = require("../../models/todo");
 
 const createTodo = async (req, res, next) => {
     try {
@@ -12,7 +12,7 @@ const createTodo = async (req, res, next) => {
 
         const user = req.user.id;
 
-        const newTodo = await todo.create({ title, description, user });
+        const newTodo = await Todo.create({ title, description, user });
         res.status(201).json({ todo: newTodo.id, message: "Todo created successfully." })
 
     } catch (error) {
