@@ -1,6 +1,18 @@
-const request = require("./setup");
+const supertest = require("supertest");
+const app = require("./setup");
 
 describe('Auth API', () => {
+    let server;
+    let request;
+
+    beforeAll(async () => {
+        server = app.listen(8082, () => "connected to 8082");
+        request = supertest(app);
+    });
+
+    afterAll(async () => {
+        await server.close();
+    })
 
     it('should register a new user', async () => {
         const res = await request

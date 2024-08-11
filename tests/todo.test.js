@@ -1,12 +1,17 @@
-const request = require("./setup");
+const app = require("./setup");
 const mongoose = require("mongoose");
+const superTest = require("supertest");
 
 describe('To-Do API', () => {
     let token;
     let todoId;
+    let server;
+    let request
 
     beforeAll(async () => {
 
+        server = app.listen(8081, () => "connected to 8081");
+        request = superTest(app);
         // Sign up a user and get a token
         const res = await request.post('/api/user/signUp').send({
             username: 'test@example.com',
@@ -15,6 +20,10 @@ describe('To-Do API', () => {
         token = res.body.token;
         console.log(token);
     });
+
+    afterAll(async () => {
+        await server.close();
+    })
 
     // Create to do
     it('Create a todo item', async () => {
