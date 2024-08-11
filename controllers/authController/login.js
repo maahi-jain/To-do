@@ -4,11 +4,21 @@ const jwt = require("jsonwebtoken");
 const login = async (req, res, next) => {
     try {
         const { username, password } = req.body;
-        const user = await User.findOne({ username, password });
+        const user = await User.findOne({ username });
+
+        let error = new Error("Invalid credentials.");
+        error.statusCode = 401;
 
         if (!user) {
-            let error = new Error("Username or password is wrong.");
-            error.statusCode = 401;
+            throw error;
+        }
+
+        console.log("User found.")
+
+        // Match password
+        const isMatch = await user.matchPassword(password, user.password);
+        console.log("isMatch", isMatch);
+        if (!isMatch) {
             throw error;
         }
 
