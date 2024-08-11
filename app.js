@@ -23,7 +23,4 @@ connectToDB();
 app.use("/api/user", authRouter);
 app.use("/api/todos", todoRouter);
 
-const PORT = process.env.PORT || 8080;
-const server = app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));
-
-module.exports = server;
+module.exports = app;
