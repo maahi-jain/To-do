@@ -18,7 +18,7 @@ const updateTodo = async (req, res, next) => {
         todo.state = state || todo.state;
 
         await todo.save();
-        res.status(200).json({ todo, message: "Todo update successfully." })
+        res.status(200).json({ todo, message: "Todo updated successfully." })
 
     } catch (error) {
         next(error);

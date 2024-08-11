@@ -1,6 +1,9 @@
 // setup.js
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require("mongodb-memory-server");
+const app = require('../app');
+const supertest = require('supertest');
+const request = supertest(app);
 
 let mongoServer;
 
@@ -25,4 +28,8 @@ afterAll(async () => {
     await mongoose.connection.dropDatabase();
     await mongoose.connection.close();
     await mongoServer.stop();
+    app.close();
+    console.log("connections closed");
 });
+
+module.exports = request;

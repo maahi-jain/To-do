@@ -1,7 +1,4 @@
-require("./setup.js");
-const app = require("../app");
-const supertest = require("supertest");
-const request = supertest(app);
+const request = require("./setup");
 const mongoose = require("mongoose");
 
 describe('To-Do API', () => {
@@ -9,8 +6,7 @@ describe('To-Do API', () => {
     let todoId;
 
     beforeAll(async () => {
-        console.log("To do started");
-        console.log("Imported request--", request);
+
         // Sign up a user and get a token
         const res = await request.post('/api/user/signUp').send({
             username: 'test@example.com',
@@ -20,10 +16,7 @@ describe('To-Do API', () => {
         console.log(token);
     });
 
-    afterAll(async () => {
-        app.close();
-    })
-
+    // Create to do
     it('Create a todo item', async () => {
         const res = await request.post("/api/todos")
             .set('Authorization', `${token}`)
@@ -57,10 +50,32 @@ describe('To-Do API', () => {
 
     // Get non-exist Todo
     it('should return 404 for a non-existent to-do item', async () => {
-        const res = await request.get(`/api/todos/${new mongoose.Types.ObjectId()}`)
+        let objectId = new mongoose.Types.ObjectId()
+        const res = await request.get(`/api/todos/${objectId}`)
             .set('Authorization', `${token}`);
         expect(res.statusCode).toEqual(404);
         expect(res.body.message).toEqual('Todo not found.');
     });
 
+    // Updae todo
+    it('should update a todo', async () => {
+        const res = await request
+            .put(`/api/todos/${todoId}`)
+            .set('Authorization', `${token}`)
+            .send({ title: 'Updated Todo', description: 'This is updated', state: 'completed' });
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.todo).toHaveProperty('title', 'Updated Todo');
+        expect(res.body).toHaveProperty('message', 'Todo updated successfully.')
+    });
+
+    //  Delete todo
+    it('should delete a todo', async () => {
+        const res = await request
+            .delete(`/api/todos/${todoId}`)
+            .set('Authorization', `${token}`);
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toHaveProperty('message', 'To do successfully deleted.');
+    });
 });
