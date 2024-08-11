@@ -12,6 +12,6 @@ router.post('/', auth, createTodo, error);
 router.get('/', auth, getAllTodos, error);
 router.get('/:id', auth, getTodoById, error);
 router.put('/:id', auth, updateTodo, error);
-router.delete(':id', auth, deleteTodo, error);
+router.delete('/:id', auth, deleteTodo, error);
 
 module.exports = router;

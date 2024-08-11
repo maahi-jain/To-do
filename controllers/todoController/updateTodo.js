@@ -9,11 +9,15 @@ const updateTodo = async (req, res, next) => {
         console.log("Todo Id--", TodoId);
         const todo = await Todo.findOne({ user, _id: TodoId });
 
+        if (!todo) {
+            res.status(404).json({ message: "Todo not found." })
+        }
+
         todo.title = title || todo.title;
         todo.description = description || todo.description;
         todo.state = state || todo.state;
 
-        todo.save();
+        await todo.save();
         res.status(200).json({ todo, message: "Todo update successfully." })
 
     } catch (error) {
